@@ -32,8 +32,8 @@ jobs:
         sdkmanager "ndk;${NDK_VERSION}"
     - name: Build app
       run: |
-          mkdir -p .config/android
-          echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > .config/android/roundsync.keystore
+          mkdir -p app/.config/android
+          echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > app/.config/android/roundsync.keystore
           ./gradlew assembleOssRelease
       
       env:
