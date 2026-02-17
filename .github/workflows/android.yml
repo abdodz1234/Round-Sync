@@ -31,10 +31,13 @@ jobs:
         NDK_VERSION="$(grep -E "^de\.felixnuesse\.extract\.ndkVersion=" gradle.properties | cut -d'=' -f2)"
         sdkmanager "ndk;${NDK_VERSION}"
     - name: Build app
-      run: ./gradlew assembleOssRelease
+      run: |
+          mkdir -p .config/android
+          echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > .config/android/roundsync.keystore
+          ./gradlew assembleOssRelease
+      
       env:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEYSTORE: ${{ secrets.KEYSTORE }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
     - name: Upload APK (arm)
       uses: actions/upload-artifact@v4
